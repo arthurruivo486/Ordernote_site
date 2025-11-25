@@ -264,24 +264,22 @@
     }
     
     .screenshot {
-      width: 100%;
-      height: 180px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary-ultralight), #f5f0ff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-light);
-      border: 1px solid var(--border-light);
-      overflow: hidden;
-      font-size: 14px;
-    }
-    
-    .screenshot img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+  width: 100%;
+  max-width: 360px;   /* largura típica de celular */
+  height: 640px;      /* altura típica de celular */
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+}
+
+.screenshot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* mostra a imagem inteira sem cortar */
+  background: #000;    /* opcional: bordas como celular */
+}
+
     
     .features {
       display: grid;
@@ -551,10 +549,10 @@
             </div>
             
             <div class="screenshot-container">
-              <div class="screenshot">[Screenshot 1]</div>
-              <div class="screenshot">[Screenshot 2]</div>
-              <div class="screenshot">[Screenshot 3]</div>
-              <div class="screenshot">[Screenshot 4]</div>
+              <div class="screenshot"><img src="./Screenshot 2025-11-25 172124.png" alt=""></div>
+              <div class="screenshot"><img src="./Screenshot 2025-11-25 172146.png" alt=""></div>
+              <div class="screenshot"><img src="./Screenshot 2025-11-25 172658.png" alt=""></div>
+              <div class="screenshot"><img src="./Screenshot 2025-11-25 172719.png" alt=""></div>
             </div>
             
             <div class="features">
@@ -694,9 +692,9 @@
           <div class="card" style="margin-top: 20px;">
             <h3 class="card-title">Contato</h3>
             <div style="margin-top: 15px; font-size: 14px; color: var(--text-muted);">
-              <p>E-mail: contato@ordernote.com</p>
+              <p>E-mail: webtechteamoficial@gmail.com</p>
               <p style="margin-top: 10px;">Site: ordernote.com</p>
-              <p style="margin-top: 10px;">Suporte: suporte@ordernote.com</p>
+              <p style="margin-top: 10px;">Suporte: webtechteamoficial@gmail.com</p>
             </div>
           </div>
         </aside>
@@ -708,7 +706,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="copyright">
-          &copy; 2023 Ordernote. Todos os direitos reservados.
+          &copy; 2025 webtechteamoficial. Todos os direitos reservados.
         </div>
         <div class="footer-links">
           <a href="#" class="footer-link">Privacidade</a>
