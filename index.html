@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ordernote — Sistema de Gestão de Vendas</title>
+  <meta name="description" content="Baixe o APK do Ordernote — gerencie pedidos, clientes e vendas de forma simples e eficiente." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #7b2ff7;
+      --primary-dark: #5c1fa8;
+      --primary-light: #9d5af9;
+      --primary-ultralight: #f0e7ff;
+      --secondary: #311aa4;
+      --accent: #06b6d4;
+      --bg: #ffffff;
+      --card: #ffffff;
+      --text: #333333;
+      --text-muted: #666666;
+      --text-light: #888888;
+      --border: #e0e0e0;
+      --border-light: #f0f0f0;
+      --success: #18d467;
+      --warning: #ff9800;
+      --danger: #e91e63;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    header {
+      padding: 20px 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: white;
+      box-shadow: 0 4px 15px rgba(123, 47, 247, 0.3);
+    }
+    
+    .logo-text h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .logo-text p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 80px 0;
+      text-align: center;
+      background: linear-gradient(135deg, #f9f5ff 0%, #f0e7ff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237b2ff7' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h2 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--primary-dark);
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+    
+    .hero-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(123, 47, 247, 0.1);
+      border: 1px solid rgba(123, 47, 247, 0.2);
+      border-radius: 20px;
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+    
+    /* Main Content */
+    main {
+      flex: 1;
+      padding: 60px 0;
+      background: var(--bg);
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 30px;
+    }
+    
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    
+    .card-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .version-badge {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .download-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .file-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .file-size {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(123, 47, 247, 0.3);
+    }
+    
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(123, 47, 247, 0.4);
+    }
+    
+    .download-btn-lg {
+      padding: 16px 32px;
+      font-size: 18px;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    
+    .screenshot-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .screenshot {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary-ultralight), #f5f0ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      font-size: 14px;
+    }
+    
+    .screenshot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: var(--primary-ultralight);
+      border-radius: 10px;
+      transition: transform 0.2s ease;
+    }
+    
+    .feature:hover {
+      transform: translateY(-3px);
+    }
+    
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(123, 47, 247, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+    
+    .feature-text {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    /* Accordion */
+    .accordion {
+      margin-top: 20px;
+    }
+    
+    .accordion-item {
+      margin-bottom: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+    }
+    
+    .accordion-header {
+      padding: 15px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      background: var(--primary-ultralight);
+      transition: background 0.3s ease;
+    }
+    
+    .accordion-header:hover {
+      background: #e8dcff;
+    }
+    
+    .accordion-content {
+      padding: 0 15px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .accordion-content.active {
+      padding: 0 15px 15px;
+      max-height: 500px;
+    }
+    
+    .accordion-icon {
+      transition: transform 0.3s ease;
+    }
+    
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    /* Admin Section */
+    .admin-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-light);
+    }
+    
+    .admin-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--text);
+    }
+    
+    .admin-upload {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .file-input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 14px;
+    }
+    
+    .upload-btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: rgba(123, 47, 247, 0.1);
+      border: 1px solid rgba(123, 47, 247, 0.3);
+      color: var(--primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .upload-btn:hover {
+      background: rgba(123, 47, 247, 0.2);
+    }
+    
+    .upload-result {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      background: #f8f9fa;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .footer-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+      color: var(--primary);
+    }
+    
+    .copyright {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 36px;
+      }
+      
+      .screenshot-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .features {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+      
+      .download-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon">ON</div>
+          <div class="logo-text">
+            <h1>Ordernote</h1>
+            <p>Sistema de gestão de vendas</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="#download" class="download-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 16L12 4M12 16L8 12M12 16L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Baixar APK
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">Versão mais recente disponível</div>
+        <h2>Gestão de Vendas Simplificada</h2>
+        <p>Ordernote é o aplicativo ideal para pequenos negócios gerenciarem vendas, clientes e produtos de forma prática e eficiente.</p>
+        <a href="#download" class="download-btn download-btn-lg">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 16L12 4M12 16L8 12M12 16L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Baixar Ordernote APK
+        </a>
+        <div class="file-info">
+          <span class="file-size" id="fileSize">Tamanho: -</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="grid">
+        <section>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Informações do Aplicativo</h3>
+              <div class="version-badge" id="version">v1.0.0</div>
+            </div>
+            
+            <div class="download-info">
+              <div class="file-info">
+                <div class="file-size" id="detailedFileSize">Tamanho do arquivo: -</div>
+                <div class="file-size">Última atualização: <span id="updateDate">-</span></div>
+              </div>
+              <a id="downloadLink" class="download-btn" href="files/Ordernote.apk" download>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 16L12 4M12 16L8 12M12 16L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Baixar APK
+              </a>
+            </div>
+            
+            <div class="screenshot-container">
+              <div class="screenshot">[Screenshot 1]</div>
+              <div class="screenshot">[Screenshot 2]</div>
+              <div class="screenshot">[Screenshot 3]</div>
+              <div class="screenshot">[Screenshot 4]</div>
+            </div>
+            
+            <div class="features">
+              <div class="feature">
+                <div class="feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <span class="feature-text">Gestão de clientes</span>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <span class="feature-text">Controle de vendas</span>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <span class="feature-text">Cadastro de produtos</span>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <span class="feature-text">Relatórios simples</span>
+              </div>
+            </div>
+            
+            <div class="accordion">
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <span>Changelog</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="accordion-content">
+                  <div id="changelog" style="padding: 12px 0; color: var(--text-muted); font-size: 14px;">
+                    <div>- v1.0.0: Lançamento inicial com funcionalidades básicas de vendas.</div>
+                    <div>- v0.9.0: Versão beta com correções de estabilidade.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <span>Como instalar (Android)</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="accordion-content">
+                  <div style="padding: 12px 0; color: var(--text-muted); font-size: 14px;">
+                    <p>1. Baixe o arquivo APK usando o botão acima.</p>
+                    <p>2. Abra o arquivo no seu dispositivo Android.</p>
+                    <p>3. Se necessário, ative "Fontes desconhecidas" em Configurações > Segurança.</p>
+                    <p>4. Siga as instruções de instalação.</p>
+                    <p>5. Abra o aplicativo e comece a usar!</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <span>Privacidade e Segurança</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="accordion-content">
+                  <div style="padding: 12px 0; color: var(--text-muted); font-size: 14px;">
+                    <p>O Ordernote armazena todos os dados localmente no seu dispositivo. Não coletamos nenhuma informação pessoal.</p>
+                    <p>Recomendamos fazer backup regular dos seus dados para evitar perdas.</p>
+                    <p>Para atualizações, desinstale a versão anterior antes de instalar a nova.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <aside>
+          <div class="card">
+            <h3 class="card-title">Download Rápido</h3>
+            
+            <a id="downloadBig" class="download-btn download-btn-lg" href="files/Ordernote.apk" download>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 16L12 4M12 16L8 12M12 16L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Baixar Ordernote.apk
+            </a>
+            
+            <div style="margin-top: 15px; font-size: 14px; color: var(--text-muted);">
+              <p>Link direto: <span id="rawLink">/files/Ordernote.apk</span></p>
+              <p style="margin-top: 10px;">Se o download não iniciar, verifique seu navegador ou tente um navegador diferente.</p>
+            </div>
+            
+            <div class="admin-section">
+              <h4 class="admin-title">Admin — Upload de Nova Versão</h4>
+              <div class="admin-upload">
+                <input type="file" id="apkFile" class="file-input" accept=".apk" />
+                <button id="uploadBtn" class="upload-btn">Enviar</button>
+              </div>
+              <div id="uploadResult" class="upload-result"></div>
+            </div>
+            
+            <div class="accordion">
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <span>Instruções de Deploy</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="accordion-content">
+                  <div style="padding: 12px 0; color: var(--text-muted); font-size: 14px;">
+                    <p>1. Coloque o APK em <code>./public/files/Ordernote.apk</code></p>
+                    <p>2. Execute um servidor estático (ex: Node/Express)</p>
+                    <p>3. Configure HTTPS (Let's Encrypt / Cloudflare)</p>
+                    <p>4. Para arquivos grandes, use S3/Storage e atualize o link</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="margin-top: 20px;">
+            <h3 class="card-title">Contato</h3>
+            <div style="margin-top: 15px; font-size: 14px; color: var(--text-muted);">
+              <p>E-mail: contato@ordernote.com</p>
+              <p style="margin-top: 10px;">Site: ordernote.com</p>
+              <p style="margin-top: 10px;">Suporte: suporte@ordernote.com</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="copyright">
+          &copy; 2023 Ordernote. Todos os direitos reservados.
+        </div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Privacidade</a>
+          <a href="#" class="footer-link">Termos</a>
+          <a href="#" class="footer-link">Suporte</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Dados iniciais
+    const meta = {
+      version: 'v1.0.0',
+      size: '-',
+      updateDate: '15/11/2023',
+      changelog: [
+        'v1.0.0 — Lançamento inicial com funcionalidades básicas de vendas',
+        'v0.9.0 — Versão beta com correções de estabilidade'
+      ],
+      apkPath: 'files/Ordernote.apk'
+    };
+
+    // Inicializar dados na página
+    document.getElementById('version').innerText = meta.version;
+    document.getElementById('updateDate').innerText = meta.updateDate;
+    document.getElementById('downloadLink').href = meta.apkPath;
+    document.getElementById('downloadBig').href = meta.apkPath;
+    document.getElementById('rawLink').innerText = meta.apkPath;
+    
+    // Tenta pegar o tamanho do arquivo via HEAD
+    fetch(meta.apkPath, { method: 'HEAD' }).then(r => {
+      const len = r.headers.get('content-length');
+      if(len) {
+        const sizeMB = (len / (1024 * 1024)).toFixed(1);
+        document.getElementById('fileSize').innerText = `Tamanho: ${sizeMB} MB`;
+        document.getElementById('detailedFileSize').innerText = `Tamanho do arquivo: ${sizeMB} MB`;
+      }
+    }).catch(() => {
+      document.getElementById('fileSize').innerText = 'Tamanho: ~15 MB';
+      document.getElementById('detailedFileSize').innerText = 'Tamanho do arquivo: ~15 MB';
+    });
+
+    // Accordion functionality
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        const content = item.querySelector('.accordion-content');
+        
+        // Close all other items
+        document.querySelectorAll('.accordion-item').forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('active');
+            otherItem.querySelector('.accordion-content').classList.remove('active');
+          }
+        });
+        
+        // Toggle current item
+        item.classList.toggle('active');
+        content.classList.toggle('active');
+      });
+    });
+
+    // Upload functionality (requer backend)
+    const uploadBtn = document.getElementById('uploadBtn');
+    uploadBtn.addEventListener('click', async () => {
+      const fileInput = document.getElementById('apkFile');
+      const result = document.getElementById('uploadResult');
+      
+      if(!fileInput.files.length) {
+        result.innerText = 'Selecione um arquivo .apk';
+        return;
+      }
+      
+      const f = fileInput.files[0];
+      const fd = new FormData();
+      fd.append('apk', f);
+      
+      uploadBtn.disabled = true;
+      uploadBtn.innerText = 'Enviando...';
+      
+      try {
+        const res = await fetch('/upload', { method: 'POST', body: fd });
+        const j = await res.json();
+        
+        if(res.ok) {
+          result.innerText = 'Upload realizado com sucesso!';
+          result.style.color = 'var(--success)';
+        } else {
+          result.innerText = 'Erro: ' + (j.error || res.statusText);
+          result.style.color = 'var(--danger)';
+        }
+      } catch(e) {
+        result.innerText = 'Falha no envio: ' + e.message;
+        result.style.color = 'var(--danger)';
+      }
+      
+      uploadBtn.disabled = false;
+      uploadBtn.innerText = 'Enviar';
+    });
+  </script>
+</body>
+</html>
